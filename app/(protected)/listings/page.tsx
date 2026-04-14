@@ -1,17 +1,17 @@
-import type { Metadata } from "next"
-import Link from "next/link"
-import { getSession } from "@/lib/auth/session"
-import { prisma } from "@/lib/prisma"
-import { Button } from "@/components/ui/button"
-import { ListingStatusBadge } from "@/components/listings/listing-status-badge"
-import { Plus, Pencil, Trash2 } from "lucide-react"
-import Image from "next/image"
+import { Pencil, Plus, Trash2 } from "lucide-react";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { ListingStatusBadge } from "@/components/listings/listing-status-badge";
+import { Button } from "@/components/ui/button";
+import { getSession } from "@/lib/auth/session";
+import { prisma } from "@/lib/prisma";
 
-export const metadata: Metadata = { title: "Мои объявления" }
+export const metadata: Metadata = { title: "Мои объявления" };
 
 export default async function ListingsPage() {
-  const session = await getSession()
-  if (!session) return null
+  const session = await getSession();
+  if (!session) return null;
 
   const properties = await prisma.property.findMany({
     where: { ownerId: session.id },
@@ -19,10 +19,10 @@ export default async function ListingsPage() {
     include: {
       images: { orderBy: { order: "asc" }, take: 1 },
     },
-  })
+  });
 
   return (
-    <div className="max-w-4xl space-y-6">
+    <div className="max-w-4xl space-y-6 mx-auto">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Мои объявления</h1>
         <Button asChild>
@@ -35,9 +35,7 @@ export default async function ListingsPage() {
 
       {properties.length === 0 ? (
         <div className="text-center py-16 space-y-3">
-          <p className="text-muted-foreground">
-            Вы не разместили объявления.
-          </p>
+          <p className="text-muted-foreground">Вы не разместили объявления.</p>
           <Button asChild>
             <Link href="/listings/new">Создайте своё первое объявление</Link>
           </Button>
@@ -71,7 +69,9 @@ export default async function ListingsPage() {
                   {p.city} · {p.dealType === "RENT" ? "Аренда" : "Продажа"}
                 </p>
                 <ListingStatusBadge
-                  status={p.moderationStatus as "PENDING" | "PUBLISHED" | "REJECTED"}
+                  status={
+                    p.moderationStatus as "PENDING" | "PUBLISHED" | "REJECTED"
+                  }
                 />
               </div>
               <div className="flex items-center gap-2 shrink-0">
@@ -87,7 +87,7 @@ export default async function ListingsPage() {
         </div>
       )}
     </div>
-  )
+  );
 }
 
 function DeleteButton({ propertyId }: { propertyId: string }) {
@@ -95,11 +95,11 @@ function DeleteButton({ propertyId }: { propertyId: string }) {
   return (
     <form
       action={async () => {
-        "use server"
-        const { prisma: db } = await import("@/lib/prisma")
-        await db.property.delete({ where: { id: propertyId } })
-        const { revalidatePath } = await import("next/cache")
-        revalidatePath("/listings")
+        "use server";
+        const { prisma: db } = await import("@/lib/prisma");
+        await db.property.delete({ where: { id: propertyId } });
+        const { revalidatePath } = await import("next/cache");
+        revalidatePath("/listings");
       }}
     >
       <Button
@@ -111,5 +111,5 @@ function DeleteButton({ propertyId }: { propertyId: string }) {
         <Trash2 className="h-3.5 w-3.5" />
       </Button>
     </form>
-  )
+  );
 }

@@ -1,26 +1,26 @@
-import type { Metadata } from "next"
-import Link from "next/link"
-import { getSession } from "@/lib/auth/session"
-import { prisma } from "@/lib/prisma"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Building2, ClipboardList, Plus, ShieldCheck } from "lucide-react"
+import { Building2, ClipboardList, Plus, ShieldCheck } from "lucide-react";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getSession } from "@/lib/auth/session";
+import { prisma } from "@/lib/prisma";
 
-export const metadata: Metadata = { title: "Личный кабинет" }
+export const metadata: Metadata = { title: "Личный кабинет" };
 
 export default async function DashboardPage() {
-  const session = await getSession()
-  if (!session) return null
+  const session = await getSession();
+  if (!session) return null;
 
   const [myListings, myLeads] = await Promise.all([
     prisma.property.count({ where: { ownerId: session.id } }),
     session.role !== "USER"
       ? prisma.lead.count({ where: { realtorId: session.id } })
       : Promise.resolve(0),
-  ])
+  ]);
 
   return (
-    <div className="max-w-4xl space-y-8">
+    <div className="max-w-4xl mx-auto space-y-8">
       <div>
         <h1 className="text-2xl font-bold">Личный кабинет</h1>
         <p className="text-muted-foreground mt-1">
@@ -32,7 +32,9 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Мои объявления</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Мои объявления
+            </CardTitle>
             <Building2 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -53,7 +55,9 @@ export default async function DashboardPage() {
         {session.role === "ADMIN" && (
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium">Администрирование</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Администрирование
+              </CardTitle>
               <ShieldCheck className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -95,5 +99,5 @@ export default async function DashboardPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -47,8 +47,14 @@ async function CatalogResults({ searchParams }: CatalogPageProps) {
 
   if (params.dealType === "SALE" || params.dealType === "RENT")
     where.dealType = params.dealType
-  if (params.propertyType)
+  if (
+    params.propertyType &&
+    ["APARTMENT", "HOUSE", "STUDIO", "COMMERCIAL", "LAND", "TOWNHOUSE"].includes(
+      params.propertyType
+    )
+  ) {
     where.propertyType = params.propertyType as Prisma.EnumPropertyTypeFilter["equals"]
+  }
   if (params.city) where.city = { contains: params.city, mode: "insensitive" }
   if (params.minPrice || params.maxPrice) {
     where.price = {}

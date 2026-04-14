@@ -65,9 +65,9 @@ export function FiltersPanel() {
           {DEAL_TYPES.map((t) => (
             <button
               key={t.value}
-              onClick={() => setFilter("dealType", t.value)}
+              onClick={() => setFilter("dealType", t.value === "ALL" ? "" : t.value)}
               className={`text-left text-sm px-2 py-1 rounded-md transition-colors ${
-                filters.dealType === t.value
+                (t.value === "ALL" && !filters.dealType) || filters.dealType === t.value
                   ? "bg-primary text-primary-foreground"
                   : "hover:bg-muted"
               }`}
@@ -86,8 +86,8 @@ export function FiltersPanel() {
           Тип недвижимости
         </Label>
         <Select
-          value={filters.propertyType}
-          onValueChange={(v) => setFilter("propertyType", v)}
+          value={filters.propertyType || "ALL"}
+          onValueChange={(v) => setFilter("propertyType", v === "ALL" ? "" : v)}
         >
           <SelectTrigger>
             <SelectValue placeholder="Все типы" />
