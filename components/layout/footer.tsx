@@ -43,6 +43,12 @@ export function Footer() {
               Каталог
             </Link>
             <Link
+              href="/about"
+              className="hover:text-foreground transition-colors"
+            >
+              О нас
+            </Link>
+            <Link
               href="/register"
               className="hover:text-foreground transition-colors"
             >

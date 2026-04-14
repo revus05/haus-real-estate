@@ -47,6 +47,7 @@ export function Header() {
 
   const navLinks = [
     { href: "/catalog", label: "Каталог" },
+    { href: "/about", label: "О нас" },
     ...(user
       ? [{ href: "/listings/new", label: "Разместить объявление" }]
       : []),
