@@ -14,7 +14,8 @@
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
-    "db:seed": "bun run prisma/seed.ts"
+    "db:seed": "bun run prisma/seed.ts",
+    "postinstall": "bun run db:generate && bun run db:seed"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
